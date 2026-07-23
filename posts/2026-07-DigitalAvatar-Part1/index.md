@@ -9,7 +9,7 @@ exhibition: "DigitalAvatar"
 ## 前言
 在Computex2025和2026，安提有展出Digital Human搭配機器手臂的互動應用，其中的Digital Human是採用NVIDIA的Animation Pipeline workflow實做的。
 
-這篇文章會介紹該如何使用這套方案，從推薦設備、環境配置到控制Digital Avatar的動作和外觀，方便有興趣的人參考。
+這篇文章會介紹該如何使用這套方案，從推薦設備、環境配置到控制Digital Avatar的動作和外觀，方便有興趣的人參考。也會整理此次展示系統所使用的安提產品與硬體配置。
 
 下一篇則會介紹如何將 Audio2Face（A2F）等語音轉表情的技術串接到這個 Digital Human 上，讓他可以開口講話。
 
@@ -86,9 +86,32 @@ RTX的顯卡不是剛需，若是不介意較差的渲染效果和卡頓和Glitc
 NVIDIA RTX 3060Ti負責跑Omniverse Renderer + Animation Pipeline。
 NVIDIA RTX 2080負責跑Audio2Face，這個是Digital Human中重要的另一個部份，下篇文章中會介紹。
 
+> ⚠️ 此處所列硬體規格僅涵蓋 Digital Avatar 系統本身的執行需求，不包含 LLM 模型或其他 AI Agent 相關服務所需的額外運算資源。
+
 ---
 
+## 展示系統的硬體配置
 
+在Computex等展場中，我們有展示Digital Avatar搭配AI Agent的展場互動應用，這次的展示系統使用了安提自有的AI伺服器方案：
+
+### [Aetina AEX-2UA1](https://www.aetina.com/ch/products-detail.php?i=730)
+
+![Aetina AEX-2UA1](./assets/DigitalHumanInComputex.jpeg)
+
+AEX-2UA1是一台2U短機箱（僅420mm深）的AI伺服器，基於NVIDIA MGX™模組化架構設計，最多可安裝2張雙槽高效能GPU（NVIDIA® L40S、NVIDIA RTX PRO™ 6000 Blackwell Server Edition、NVIDIA® H200 NVL），搭配單顆Intel® Xeon® 6700系列處理器，主打本地LLM部署、多模態推論訓練與邊緣端生成式AI運算。
+
+在展場中，我們搭載了 **NVIDIA RTX PRO™ 6000 Blackwell Server Edition + NVIDIA® L4** 的組合，分別負責Digital Avatar的渲染運算，以及AI Agent（gpt-oss-120b）的推論工作。
+
+### [Aetina AIP-FR68S](https://www.aetina.com/ch/products-detail.php?i=727)
+
+AIP-FR68S是一台體積更緊湊（206×240×400mm）、支援壁掛或桌面安裝的模組化AI伺服器，採用12/13/14代Intel® Core i9/i7/i5桌上型處理器，透過內建PCIe Gen5交換晶片相容NVIDIA Blackwell架構GPU，主打地端生成式AI/LLM推論、AOI瑕疵檢測、智慧製造影像強化與Agentic AI應用。
+
+在展場中，我們搭載了 **NVIDIA® L40S + NVIDIA® L4** 的組合，同樣分別負責Digital Avatar的渲染運算，以及AI Agent（gpt-oss-20b）的推論工作，展示在較小體積的機箱下也能跑起完整的Digital Avatar + AI Agent互動應用。
+
+| 展示主機 | GPU 配置 |
+| :--- | :--- |
+| [Aetina AEX-2UA1](https://www.aetina.com/ch/products-detail.php?i=730) | NVIDIA RTX PRO™ 6000 Blackwell Server Edition + NVIDIA® L4 |
+| [Aetina AIP-FR68S](https://www.aetina.com/ch/products-detail.php?i=727) | NVIDIA® L40S + NVIDIA® L4 |
 
 ## 如何跑起來
 
@@ -266,8 +289,6 @@ cd avatar_configurator
 
 將 Container 啟動指令中的 `-v $(pwd)/default-avatar-scene_v1.1.5:/home/interactive-avatar/asset` 換成 `-v $(pwd)/exported:/home/interactive-avatar/asset`——也就是把原本指向 Default Avatar Scene 的路徑，換成剛剛匯出的 `exported` 資料夾，執行起來後就可以看到自己設定的 Avatar 外觀了。
 
-## Github 釋出
-
 ## 參考資料
 [Nvidia Animation Pipeline](https://archive.docs.nvidia.com/ace/animation-pipeline/1.1/index.html)
 
@@ -279,3 +300,8 @@ cd avatar_configurator
 
 
 [NVIDIA Default Animation Graph](https://archive.docs.nvidia.com/ace/animation-graph-microservice/1.1/default-animation-graph.html)
+
+## 產品連結
+
+- [Aetina AEX-2UA1](https://www.aetina.com/ch/products-detail.php?i=730)
+- [Aetina AIP-FR68S](https://www.aetina.com/ch/products-detail.php?i=727)
